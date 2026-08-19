@@ -1,1 +1,14 @@
-<Solution />
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/API/">
+    <Project Path="Melone.Currencies.Api/Melone.Currencies.Api.csproj" Id="b330fe9e-c1b4-4222-bbea-ebdb31a6d48c" />
+  </Folder>
+  <Folder Name="/src/Core/">
+    <Project Path="Melone.Currencies.Application/Melone.Currencies.Application.csproj" />
+    <Project Path="Melone.Currencies.Domain/Melone.Currencies.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="Melone.Currencies.Infrastructure/Melone.Currencies.Infrastructure.csproj" />
+    <Project Path="Melone.Currencies.Persistence/Melone.Currencies.Persistence.csproj" />
+  </Folder>
+</Solution>
