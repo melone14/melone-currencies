@@ -25,7 +25,10 @@ public class CurrencyRateRepository : ICurrencyRateRepository
             .AnyAsync(c => c.EffectiveDate.Date == date.Date, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<Currency>> GetLatestRatesAsync(CancellationToken cancellationToken = default)
+    public async Task<(IReadOnlyList<Currency> Items, int TotalCount)> GetLatestRatesAsync(
+     int pageNumber,
+     int pageSize,
+     CancellationToken cancellationToken = default)
     {
         var latestDate = await _dbContext.Currencies
             .Select(c => c.EffectiveDate)
@@ -34,12 +37,21 @@ public class CurrencyRateRepository : ICurrencyRateRepository
 
         if (latestDate == default)
         {
-            return new List<Currency>();
+            return (new List<Currency>(), 0);
         }
 
-        return await _dbContext.Currencies
+        var query = _dbContext.Currencies
             .Where(c => c.EffectiveDate.Date == latestDate.Date)
+            .OrderBy(c => c.Code);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
     }
 
     public async Task<IReadOnlyList<Currency>> GetHistoryAsync(

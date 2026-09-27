@@ -18,9 +18,9 @@ public class CurrenciesController : ControllerBase
     }
 
     [HttpPost("sync")]
-    public async Task<IActionResult> Sync()
+    public async Task<IActionResult> Sync(CancellationToken cancellationToken)
     {
-        var effectiveDate = await _mediator.Send(new SyncCurrenciesCommand());
+        var effectiveDate = await _mediator.Send(new SyncCurrenciesCommand(), cancellationToken);
 
         if (effectiveDate == null)
             return BadRequest("Nie udało się pobrać kursów z NBP.");
@@ -29,9 +29,15 @@ public class CurrenciesController : ControllerBase
     }
 
     [HttpGet("latest")]
-    public async Task<IActionResult> GetLatest()
+    public async Task<IActionResult> GetLatest(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 50,
+        CancellationToken cancellationToken = default)
     {
-        var currencies = await _mediator.Send(new GetLatestCurrenciesQuery());
+        pageNumber = Math.Max(pageNumber, 1);
+        pageSize = Math.Clamp(pageSize, 1, 500);
+
+        var currencies = await _mediator.Send(new GetLatestCurrenciesQuery(pageNumber, pageSize), cancellationToken);
         return Ok(currencies);
     }
 
@@ -39,12 +45,13 @@ public class CurrenciesController : ControllerBase
     public async Task<IActionResult> GetHistory(
         [FromRoute] string code,
         [FromQuery] DateTime? fromDate,
-        [FromQuery] DateTime? toDate)
+        [FromQuery] DateTime? toDate,
+        CancellationToken cancellationToken = default)
     {
         var start = fromDate ?? DateTime.Today.AddDays(-30);
         var end = toDate ?? DateTime.Today;
 
-        var history = await _mediator.Send(new GetCurrencyHistoryQuery(code, start, end));
+        var history = await _mediator.Send(new GetCurrencyHistoryQuery(code, start, end), cancellationToken);
         return Ok(history);
     }
 }

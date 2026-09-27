@@ -1,17 +1,28 @@
 using Melone.Currencies.Application;
 using Melone.Currencies.Infrastructure;
 using Melone.Currencies.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddPersistanceServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var devCorsPolicy = "DevCorsPolicy";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: devCorsPolicy, policy =>
+    {
+        policy.WithOrigins("http://localhost:7000", "https://localhost:7000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -26,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(devCorsPolicy);
 
 app.UseHttpsRedirection();
 

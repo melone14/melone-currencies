@@ -7,11 +7,14 @@ public interface ICurrencyRateRepository
 
     Task<bool> ExistsForDateAsync(DateTime date, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<Currency>> GetLatestRatesAsync(CancellationToken cancellationToken = default);
+    Task<(IReadOnlyList<Currency> Items, int TotalCount)> GetLatestRatesAsync(
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<Currency>> GetHistoryAsync(
-        string code, 
-        DateTime fromDate, 
-        DateTime toDate, 
+        string code,
+        DateTime fromDate,
+        DateTime toDate,
         CancellationToken cancellationToken = default);
 }
