@@ -31,7 +31,7 @@ export async function getLatestCurrencies(
   pageSize: number,
   signal?: AbortSignal
 ) {
-  const response = await apiClient.get<PagedResult<CurrencyRate>>('/Currencies/latest', {
+  const response = await apiClient.get<PagedResult<CurrencyRate>>('/currencies/latest', {
     params: { pageNumber, pageSize },
     signal,
   });
@@ -45,7 +45,7 @@ export async function getCurrencyHistory(
   signal?: AbortSignal
 ) {
   const response = await apiClient.get<CurrencyHistory | null>(
-    `/Currencies/history/${code}`,
+    `/currencies/history/${code}`,
     {
       params: {
         fromDate: fromDate.toISOString(),

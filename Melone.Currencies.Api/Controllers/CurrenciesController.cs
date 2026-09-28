@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Melone.Currencies.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/currencies")]
 public class CurrenciesController : ControllerBase
 {
     private readonly ISender _mediator;

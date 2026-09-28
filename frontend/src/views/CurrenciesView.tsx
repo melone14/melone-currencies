@@ -10,6 +10,7 @@ function CurrenciesListView() {
   const navigate = useNavigate();
 
   if (error) return <ErrorMessage message={error} />;
+  if (loading && !data) return <LoadingSpinner />;
   if (!data) return null;
 
   const handleRowClick = (code: string) => {
