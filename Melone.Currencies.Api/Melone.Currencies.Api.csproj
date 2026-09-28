@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Melone.Currencies.Application\Melone.Currencies.Application.csproj" />
+    <ProjectReference Include="..\Melone.Currencies.Infrastructure\Melone.Currencies.Infrastructure.csproj" />
+    <ProjectReference Include="..\Melone.Currencies.Persistence\Melone.Currencies.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
